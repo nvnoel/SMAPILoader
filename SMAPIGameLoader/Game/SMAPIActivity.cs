@@ -23,7 +23,7 @@ namespace SMAPIGameLoader;
     Icon = "@drawable/icon",
     Theme = "@style/Theme.Splash",
     AlwaysRetainTaskState = true,
-    LaunchMode = LaunchMode.SingleInstance,
+    LaunchMode = LaunchMode.SingleTop,
     ScreenOrientation = ScreenOrientation.SensorLandscape,
     ConfigurationChanges = (ConfigChanges.Keyboard
         | ConfigChanges.KeyboardHidden | ConfigChanges.Orientation

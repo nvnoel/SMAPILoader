@@ -51,9 +51,7 @@ internal static class EntryGame
     static void StartSMAPIActivity(Activity launcherActivity)
     {
         var intent = new Intent(launcherActivity, typeof(SMAPIActivity));
-        intent.AddFlags(ActivityFlags.ClearTask);
-        intent.AddFlags(ActivityFlags.NewTask);
+        intent.AddFlags(ActivityFlags.ReorderToFront);
         launcherActivity.StartActivity(intent);
-        launcherActivity.Finish();
     }
 }

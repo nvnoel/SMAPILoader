@@ -1,0 +1,35 @@
+name: Build and Release armv8a
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install Android Workload
+        run: dotnet workload install android
+
+      - name: Build Application
+        run: dotnet build SMAPILoader.sln -c Release -p:RuntimeIdentifier=android-arm64
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: SMAPIGameLoader/bin/Release/net9.0-android/android-arm64/abc.smapi.gameloader-Signed.apk
+          tag_name: "auto-release-${{ github.sha }}"
+          name: "Auto Build armv8a (${{ github.sha }})"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
