@@ -52,6 +52,10 @@ internal static class EntryGame
     {
         var intent = new Intent(launcherActivity, typeof(SMAPIActivity));
         intent.AddFlags(ActivityFlags.ReorderToFront);
-        launcherActivity.StartActivity(intent);
+
+        launcherActivity.RunOnUiThread(() =>
+        {
+            launcherActivity.StartActivity(intent);
+        });
     }
 }

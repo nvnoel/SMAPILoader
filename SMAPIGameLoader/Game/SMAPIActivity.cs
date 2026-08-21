@@ -34,9 +34,15 @@ public class SMAPIActivity : AndroidGameActivity
     public static SMAPIActivity Instance { get; private set; }
 
     Bundle currentBundle;
+    protected override void OnNewIntent(Intent intent)
+    {
+        base.OnNewIntent(intent);
+        Console.WriteLine("SMAPIActivity.OnNewIntent()");
+    }
+
     protected override void OnCreate(Bundle bundle)
     {
-        base.OnCreate(currentBundle);
+        base.OnCreate(bundle);
         Console.WriteLine("SMAPIActivity.OnCreate()");
 
         //init sdk
