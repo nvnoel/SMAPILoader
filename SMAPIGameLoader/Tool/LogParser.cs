@@ -11,14 +11,6 @@ using Xamarin.Essentials;
 namespace SMAPIGameLoader.Tool;
 internal static class LogParser
 {
-    static async Task<HttpResponseMessage> PostHTTPRequestAsync(this HttpClient client,
-       string url, Dictionary<string, string> data)
-    {
-        using HttpContent formContent = new FormUrlEncodedContent(data);
-        return await client.PostAsync(url, formContent).ConfigureAwait(false);
-    }
-
-    const string SMAPILogUrl = "https://smapi.io/log";
     const string SMAPILogFileName = "SMAPI-latest.txt";
 
     public static void OnClickUploadLog(object sender, EventArgs eventArgs)
@@ -29,8 +21,8 @@ internal static class LogParser
             {
                 try
                 {
-                    TaskTool.SetTitle("SMAPI Log Uploading...");
-                    await TaskUploadLog();
+                    TaskTool.SetTitle("SMAPI Log Saving...");
+                    await TaskSaveLogLocal();
                 }
                 catch (Exception ex)
                 {
@@ -43,9 +35,9 @@ internal static class LogParser
             ErrorDialogTool.Show(ex);
         }
     }
-    static async Task TaskUploadLog()
+    static async Task TaskSaveLogLocal()
     {
-        TaskTool.NewLine("starting task upload log");
+        TaskTool.NewLine("starting task save log");
 
         string logFilePath = Path.Combine(FileTool.ExternalFilesDir, "ErrorLogs", SMAPILogFileName);
         if (File.Exists(logFilePath) is false)
@@ -55,41 +47,13 @@ internal static class LogParser
         }
 
         TaskTool.NewLine("read log from path: " + logFilePath);
-        using HttpClient client = new();
-        client.BaseAddress = new Uri(SMAPILogUrl);
         var logStringContent = File.ReadAllText(logFilePath);
         var fileSize = new FileInfo(logFilePath).Length / 1024f;
         TaskTool.NewLine($"file size: {fileSize:F2}kb");
 
-        TaskTool.NewLine("please wait for uploading..");
-        var response = await client.PostHTTPRequestAsync(SMAPILogUrl, new()
-        {
-            { "input", logStringContent }
-        });
-        TaskTool.NewLine($"response status code: ${response.StatusCode}");
-        await Clipboard.SetTextAsync("");
-        if (response.IsSuccessStatusCode)
-        {
-            var clipboardString = new StringBuilder();
+        TaskTool.NewLine("copying to clipboard..");
+        await Clipboard.SetTextAsync(logStringContent);
 
-            var logUrl = response.RequestMessage.RequestUri.ToString();
-
-            clipboardString.AppendLine($"### SMAPI Log Latest");
-            clipboardString.AppendLine($"> ## [Click Link Log Here]({logUrl})");
-            clipboardString.AppendLine($"### Current App Info");
-            clipboardString.AppendLine($"> Game {StardewApkTool.CurrentGameVersion}");
-            var appBuildCode = ApkTool.LauncherBuildCode;
-            clipboardString.AppendLine($"> Launcher {ApkTool.AppVersion} - {appBuildCode}");
-            clipboardString.AppendLine($"> SMAPI {SMAPIInstaller.GetCurrentVersion()} - {SMAPIInstaller.GetBuildCode()}");
-
-            await Clipboard.SetTextAsync(clipboardString.ToString());
-            DialogTool.Show("SMAPI Log Parser",
-                $"uploaded link {logUrl}" +
-                $"\nyou can share link click 'paste' on discord");
-        }
-        else
-        {
-            DialogTool.Show("SMAPI Log Parser", $"respond error code: {response.StatusCode}");
-        }
+        DialogTool.Show("SMAPI Log", $"Log has been copied to clipboard and is available locally at:\n{logFilePath}");
     }
 }

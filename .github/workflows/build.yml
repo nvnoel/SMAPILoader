@@ -30,7 +30,7 @@ jobs:
         touch ../SMAPI-Android-1.6/src/DependenciesDll/StardewValley.GameData.dll
 
     - name: Build APK (Release, android-arm64)
-      run: dotnet build SMAPILoader.sln -c Release -p:RuntimeIdentifier=android-arm64
+      run: dotnet build SMAPIGameLoader/SMAPIGameLoader.csproj -c Release -p:RuntimeIdentifier=android-arm64
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
