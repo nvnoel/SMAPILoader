@@ -26,7 +26,7 @@ internal static class ApkTool
             else
                 return ctx.PackageManager.GetPackageInfo(PackageName, 0);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return null;
         }

@@ -1,0 +1,39 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.312'
+
+    - name: Install Android Workload
+      run: dotnet workload install android
+
+    - name: Create Dummy DLLs
+      run: |
+        mkdir -p ../SMAPI-Android-1.6/src/DependenciesDll/
+        touch ../SMAPI-Android-1.6/src/DependenciesDll/MonoGame.Framework.dll
+        touch ../SMAPI-Android-1.6/src/DependenciesDll/StardewValley.dll
+        touch ../SMAPI-Android-1.6/src/DependenciesDll/StardewValley.GameData.dll
+
+    - name: Build APK (Release, android-arm64)
+      run: dotnet build SMAPILoader.sln -c Release -p:RuntimeIdentifier=android-arm64
+
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: smapi-launcher-apk
+        path: SMAPIGameLoader/bin/Release/net9.0-android/android-arm64/*-Signed.apk

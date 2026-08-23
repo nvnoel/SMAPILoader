@@ -79,8 +79,8 @@ static class GameAssetManager
                     Directory.CreateDirectory(destFolderFullPath);
                 }
                 using var entryStream = entry.Open();
-                using var destFileStream = new FileStream(destFilePath, FileMode.Create, FileAccess.ReadWrite);
-                entryStream.CopyTo(destFileStream);
+                using var destFileStream = new FileStream(destFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 81920);
+                entryStream.CopyToAsync(destFileStream).GetAwaiter().GetResult();
             }
         }
 

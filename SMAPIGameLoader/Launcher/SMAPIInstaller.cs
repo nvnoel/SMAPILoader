@@ -32,7 +32,7 @@ internal static class SMAPIInstaller
             string buildString = SMAPIAndroidBuild.Fields.Single(p => p.Name == "BuildCode").Constant as string;
             return long.Parse(buildString);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             //ErrorDialogTool.Show(ex);
             return 0;
@@ -116,14 +116,14 @@ internal static class SMAPIInstaller
 
                     await Task.Delay(1000);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     ErrorDialogTool.Show(ex);
                     Console.WriteLine("error try to install SMAPI Zip: " + ex);
                 }
             });
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             ErrorDialogTool.Show(ex);
             Console.WriteLine("error try to install SMAPI Zip: " + ex);
@@ -180,7 +180,7 @@ internal static class SMAPIInstaller
             OnInstalledSMAPI?.Invoke();
 
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             ToastNotifyTool.Notify(ex.ToString());
             Console.WriteLine(ex);
