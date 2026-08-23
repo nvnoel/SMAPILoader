@@ -53,9 +53,9 @@ jobs:
         }
         namespace StardewValley.Audio { public class Dummy {} }
         namespace StardewValley.Network { public class Dummy {} }
-        namespace Android.Content {
-            public class Context {
-                public object GetService(string name) { return null; }
+        namespace StardewValley {
+            public static class ContextExtensions {
+                public static object GetService(this Android.Content.Context context, string name) { return null; }
             }
         }
         EOF
