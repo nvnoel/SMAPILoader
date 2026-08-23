@@ -78,7 +78,7 @@ internal static class StardewApkTool
                 // Samsung: assemblies are in the base APK
                 return BaseApkPath;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ErrorDialogTool.Show(ex, "Error try to get Arm64ApkPath");
                 return null;
@@ -102,7 +102,7 @@ internal static class StardewApkTool
                 //samsung
                 return BaseApkPath;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ErrorDialogTool.Show(ex, "Error try to get ContentApkPath");
                 return null;
@@ -136,7 +136,7 @@ internal static class StardewApkTool
             {
                 return new Version(CurrentPackageInfo?.VersionName);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return new Version(0, 0, 0, 0);
             }

@@ -116,14 +116,14 @@ internal static class SMAPIInstaller
 
                     await Task.Delay(1000);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     ErrorDialogTool.Show(ex);
                     Console.WriteLine("error try to install SMAPI Zip: " + ex);
                 }
             });
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             ErrorDialogTool.Show(ex);
             Console.WriteLine("error try to install SMAPI Zip: " + ex);
@@ -180,7 +180,7 @@ internal static class SMAPIInstaller
             OnInstalledSMAPI?.Invoke();
 
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             ToastNotifyTool.Notify(ex.ToString());
             Console.WriteLine(ex);

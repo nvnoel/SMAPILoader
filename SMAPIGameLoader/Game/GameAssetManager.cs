@@ -49,7 +49,7 @@ static class GameAssetManager
             //Console.WriteLine("on OpenStream: " + assetName);
             return File.OpenRead(assetFullPath);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             //Console.WriteLine(ex);
             throw;
