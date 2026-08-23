@@ -48,7 +48,7 @@ jobs:
             public class GameRunner {
                 public static GameRunner instance;
                 public void Run() {}
-                public Android.Content.Context Services { get; set; }
+                public System.IServiceProvider Services { get; set; }
             }
         }
         namespace StardewValley.Audio { public class Dummy {} }
@@ -80,8 +80,8 @@ jobs:
         namespace MonoGame.OpenGL { public class Dummy {} }
         namespace MonoGame.OpenAL { public class Dummy {} }
         namespace LWJGL.Util { public class Dummy {} }
-        namespace LZ4 {
-            public class LZ4Codec { public static int CompressBound(int size) { return size; } }
+        public class LZ4 {
+            public static int CompressBound(int size) { return size; }
         }
         EOF
 
