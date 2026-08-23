@@ -33,7 +33,9 @@ jobs:
         cat << 'EOF' > /tmp/dummy_dlls/stardew/StardewValley.cs
         #nullable disable
         namespace StardewValley {
-            public class MainActivity {}
+            public class MainActivity {
+                public void CheckStorageMigration() {}
+            }
             public class Game1 {
                 public static Game1 game1;
                 public static int xEdge;
@@ -51,6 +53,11 @@ jobs:
         }
         namespace StardewValley.Audio { public class Dummy {} }
         namespace StardewValley.Network { public class Dummy {} }
+        namespace Android.Content {
+            public class Context {
+                public object GetService(string name) { return null; }
+            }
+        }
         EOF
 
         cat << 'EOF' > /tmp/dummy_dlls/monogame/MonoGame.Framework.cs
@@ -74,7 +81,7 @@ jobs:
         namespace MonoGame.OpenAL { public class Dummy {} }
         namespace LWJGL.Util { public class Dummy {} }
         namespace LZ4 {
-            public class Dummy { public static int CompressBound(int size) { return size; } }
+            public class LZ4Codec { public static int CompressBound(int size) { return size; } }
         }
         EOF
 
