@@ -75,15 +75,15 @@
 		</Reference>
 		<Reference Include="MonoGame.Framework">
 			<HintPath>..\..\SMAPI-Android-1.6\src\DependenciesDll\MonoGame.Framework.dll</HintPath>
-			<Private>False</Private>
+			<ExcludeAssets>runtime</ExcludeAssets>
 		</Reference>
 		<Reference Include="StardewValley">
 			<HintPath>..\..\SMAPI-Android-1.6\src\DependenciesDll\StardewValley.dll</HintPath>
-			<Private>False</Private>
+			<ExcludeAssets>runtime</ExcludeAssets>
 		</Reference>
 		<Reference Include="StardewValley.GameData">
 			<HintPath>..\..\SMAPI-Android-1.6\src\DependenciesDll\StardewValley.GameData.dll</HintPath>
-			<Private>False</Private>
+			<ExcludeAssets>runtime</ExcludeAssets>
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>

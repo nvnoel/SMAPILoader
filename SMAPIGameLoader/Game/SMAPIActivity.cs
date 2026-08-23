@@ -13,6 +13,7 @@ using SMAPIGameLoader.Tool;
 using StardewValley;
 using System;
 using System.Collections.Generic;
+#pragma warning disable CS0618, CA1422
 using System.IO;
 using System.Reflection;
 

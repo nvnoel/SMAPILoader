@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+#pragma warning disable CA1416
 using System;
 using System.Collections.Generic;
 using System.Linq;

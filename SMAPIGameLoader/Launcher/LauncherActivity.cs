@@ -1,3 +1,4 @@
+#pragma warning disable CS8632
 using System;
 using _Microsoft.Android.Resource.Designer;
 using Android.App;
