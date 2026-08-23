@@ -24,12 +24,14 @@ jobs:
 
     - name: Create Dummy DLLs
       run: |
-        mkdir -p ../../SMAPI-Android-1.6/src/DependenciesDll/
+        DUMMY_DIR="$GITHUB_WORKSPACE/../../SMAPI-Android-1.6/src/DependenciesDll"
+        mkdir -p "$DUMMY_DIR"
         mkdir -p /tmp/dummy_dlls/stardew
         mkdir -p /tmp/dummy_dlls/monogame
         mkdir -p /tmp/dummy_dlls/gamedata
 
         cat << 'EOF' > /tmp/dummy_dlls/stardew/StardewValley.cs
+        #nullable disable
         namespace StardewValley {
             public class MainActivity {}
             public class Game1 {
@@ -52,6 +54,7 @@ jobs:
         EOF
 
         cat << 'EOF' > /tmp/dummy_dlls/monogame/MonoGame.Framework.cs
+        #nullable disable
         using System;
         namespace Microsoft.Xna.Framework {
             public class Game {}
@@ -111,15 +114,15 @@ jobs:
 
         cd /tmp/dummy_dlls/stardew
         dotnet build -c Release
-        cp bin/Release/net9.0-android/StardewValley.dll $GITHUB_WORKSPACE/../SMAPI-Android-1.6/src/DependenciesDll/StardewValley.dll
+        cp bin/Release/net9.0-android/StardewValley.dll "$DUMMY_DIR/StardewValley.dll"
 
         cd ../monogame
         dotnet build -c Release
-        cp bin/Release/net9.0-android/MonoGame.Framework.dll $GITHUB_WORKSPACE/../SMAPI-Android-1.6/src/DependenciesDll/MonoGame.Framework.dll
+        cp bin/Release/net9.0-android/MonoGame.Framework.dll "$DUMMY_DIR/MonoGame.Framework.dll"
 
         cd ../gamedata
         dotnet build -c Release
-        cp bin/Release/net9.0-android/StardewValley.GameData.dll $GITHUB_WORKSPACE/../SMAPI-Android-1.6/src/DependenciesDll/StardewValley.GameData.dll
+        cp bin/Release/net9.0-android/StardewValley.GameData.dll "$DUMMY_DIR/StardewValley.GameData.dll"
 
     - name: Build APK (Release, android-arm64)
       run: dotnet build SMAPIGameLoader/SMAPIGameLoader.csproj -c Release -p:RuntimeIdentifier=android-arm64
