@@ -1,8 +1,5 @@
 ﻿using Android.App;
 using Android.OS;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Org.Json;
 using SMAPIGameLoader.Game.Rewriter;
 using System;
 using System.Collections.Generic;
@@ -30,8 +27,8 @@ internal static class GameCloner
 
         public void SaveToFile()
         {
-            string jsonString = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(ClonerStateFilePath, jsonString);
+            using var stream = File.Create(ClonerStateFilePath);
+            System.Text.Json.JsonSerializer.Serialize(stream, this, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine("done save ClonerState into file");
         }
         public void MarkCloenGameDone()
@@ -59,11 +56,11 @@ internal static class GameCloner
         try
         {
             //throw exception here if file never crate
-            var jsonString = File.ReadAllText(ClonerStateFilePath);
-            var clonerState = JsonConvert.DeserializeObject<ClonerState>(jsonString);
+            using var stream = File.OpenRead(ClonerStateFilePath);
+            var clonerState = System.Text.Json.JsonSerializer.Deserialize<ClonerState>(stream);
             return clonerState ?? new ClonerState();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             //Recreate Game Cloner State always
             return new ClonerState();

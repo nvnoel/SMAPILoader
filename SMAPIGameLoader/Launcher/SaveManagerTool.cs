@@ -14,11 +14,11 @@ internal static class SaveManager
 {
     const string SavesDirName = "Saves";
     public static string GetSavesDir() => Path.Combine(FileTool.ExternalFilesDir, SavesDirName);
-    public static void OnClickImportSaveZip(object sender, EventArgs args)
+    public static async void OnClickImportSaveZip(object sender, EventArgs args)
     {
         try
         {
-            ImportSaveZipInternal();
+            await ImportSaveZipInternal();
         }
         catch (Exception ex)
         {
@@ -28,7 +28,7 @@ internal static class SaveManager
 
     const string SaveGameInfo_FileName = "SaveGameInfo";
 
-    static async void ImportSaveZipInternal()
+    static async Task ImportSaveZipInternal()
     {
         var pick = await FilePickerTool.PickZipFile();
         if (pick is null)
@@ -41,7 +41,7 @@ internal static class SaveManager
         }
 
         //extract it
-        HashSet<string> savesImportHashset = new();
+        HashSet<string> savesImportHashset = [];
 
         using (var zip = ZipFile.OpenRead(pick.FullPath))
         {
