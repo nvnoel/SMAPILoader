@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿#pragma warning disable CS8632
+using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using System;
@@ -14,7 +15,6 @@ internal static class StardewApkTool
     public const string GamePlayStorePackageName = "com.chucklefish.stardewvalley";
     public const string GameGalaxyStorePackageName = "com.chucklefish.stardewvalleysamsung";
     static bool IsGameFromPlayStore = false;
-    static bool IsGameFromGalaxyStore = false;
     static PackageInfo _currentPackageInfo;
 
     //init at first SDK
@@ -28,7 +28,6 @@ internal static class StardewApkTool
         if (samsung != null)
         {
             _currentPackageInfo = samsung;
-            IsGameFromGalaxyStore = true;
             Console.WriteLine("Game Install From Galaxy Store");
         }
         else if (playStore != null)

@@ -8,9 +8,10 @@ internal static class EntryGame
 {
     public static void LaunchGameActivity(Activity launcherActivity)
     {
-        TaskTool.Run(launcherActivity, async () =>
+        TaskTool.Run(launcherActivity, () =>
         {
             LaunchGameActivityInternal(launcherActivity);
+            return Task.CompletedTask;
         });
     }
 
