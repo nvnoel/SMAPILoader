@@ -2,6 +2,7 @@
 using Android.Content;
 using SMAPIGameLoader.Launcher;
 using System;
+using System.Threading.Tasks;
 
 namespace SMAPIGameLoader;
 internal static class EntryGame
