@@ -24,10 +24,10 @@ jobs:
 
     - name: Create Dummy DLLs
       run: |
-        mkdir -p ../SMAPI-Android-1.6/src/DependenciesDll/
-        touch ../SMAPI-Android-1.6/src/DependenciesDll/MonoGame.Framework.dll
-        touch ../SMAPI-Android-1.6/src/DependenciesDll/StardewValley.dll
-        touch ../SMAPI-Android-1.6/src/DependenciesDll/StardewValley.GameData.dll
+        mkdir -p ../../SMAPI-Android-1.6/src/DependenciesDll/
+        touch ../../SMAPI-Android-1.6/src/DependenciesDll/MonoGame.Framework.dll
+        touch ../../SMAPI-Android-1.6/src/DependenciesDll/StardewValley.dll
+        touch ../../SMAPI-Android-1.6/src/DependenciesDll/StardewValley.GameData.dll
 
     - name: Build APK (Release, android-arm64)
       run: dotnet build SMAPIGameLoader/SMAPIGameLoader.csproj -c Release -p:RuntimeIdentifier=android-arm64
