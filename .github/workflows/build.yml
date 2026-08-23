@@ -25,9 +25,101 @@ jobs:
     - name: Create Dummy DLLs
       run: |
         mkdir -p ../../SMAPI-Android-1.6/src/DependenciesDll/
-        touch ../../SMAPI-Android-1.6/src/DependenciesDll/MonoGame.Framework.dll
-        touch ../../SMAPI-Android-1.6/src/DependenciesDll/StardewValley.dll
-        touch ../../SMAPI-Android-1.6/src/DependenciesDll/StardewValley.GameData.dll
+        mkdir -p /tmp/dummy_dlls/stardew
+        mkdir -p /tmp/dummy_dlls/monogame
+        mkdir -p /tmp/dummy_dlls/gamedata
+
+        cat << 'EOF' > /tmp/dummy_dlls/stardew/StardewValley.cs
+        namespace StardewValley {
+            public class MainActivity {}
+            public class Game1 {
+                public static Game1 game1;
+                public static int xEdge;
+                public static int toolbarPaddingX;
+                public void OnAppResume() {}
+                public void OnAppPause() {}
+                public static void emergencyBackup() {}
+            }
+            public class TitleContainer { public static System.IO.Stream OpenStream(string name) { return null; } }
+            public class GameRunner {
+                public static GameRunner instance;
+                public void Run() {}
+                public Android.Content.Context Services { get; set; }
+            }
+        }
+        namespace StardewValley.Audio { public class Dummy {} }
+        namespace StardewValley.Network { public class Dummy {} }
+        EOF
+
+        cat << 'EOF' > /tmp/dummy_dlls/monogame/MonoGame.Framework.cs
+        using System;
+        namespace Microsoft.Xna.Framework {
+            public class Game {}
+            public class AndroidGameActivity : Android.App.Activity {}
+        }
+        namespace Microsoft.Xna.Framework.Graphics { public class SpriteBatch {} }
+        namespace Microsoft.Xna.Framework.Content { public class ContentManager {} }
+        namespace Microsoft.Xna.Framework.Audio {
+            public class Dummy {}
+            public class AudioEngine {}
+            public class AudioCategory { public string Name { get; set; } }
+        }
+        namespace MonoGame.Framework.Utilities {
+            public class FuncLoader { public static IntPtr LoadLibrary(string lib) { return IntPtr.Zero; } }
+        }
+        namespace MonoGame.OpenGL { public class Dummy {} }
+        namespace MonoGame.OpenAL { public class Dummy {} }
+        namespace LWJGL.Util { public class Dummy {} }
+        namespace LZ4 {
+            public class Dummy { public static int CompressBound(int size) { return size; } }
+        }
+        EOF
+
+        cat << 'EOF' > /tmp/dummy_dlls/gamedata/StardewValley.GameData.cs
+        namespace StardewValley.GameData { public class Dummy {} }
+        EOF
+
+        cat << 'EOF' > /tmp/dummy_dlls/stardew/StardewValley.csproj
+        <Project Sdk="Microsoft.NET.Sdk">
+          <PropertyGroup>
+            <TargetFramework>net9.0-android</TargetFramework>
+            <ImplicitUsings>enable</ImplicitUsings>
+            <Nullable>enable</Nullable>
+          </PropertyGroup>
+        </Project>
+        EOF
+
+        cat << 'EOF' > /tmp/dummy_dlls/monogame/MonoGame.Framework.csproj
+        <Project Sdk="Microsoft.NET.Sdk">
+          <PropertyGroup>
+            <TargetFramework>net9.0-android</TargetFramework>
+            <ImplicitUsings>enable</ImplicitUsings>
+            <Nullable>enable</Nullable>
+          </PropertyGroup>
+        </Project>
+        EOF
+
+        cat << 'EOF' > /tmp/dummy_dlls/gamedata/StardewValley.GameData.csproj
+        <Project Sdk="Microsoft.NET.Sdk">
+          <PropertyGroup>
+            <TargetFramework>net9.0-android</TargetFramework>
+            <ImplicitUsings>enable</ImplicitUsings>
+            <Nullable>enable</Nullable>
+          </PropertyGroup>
+        </Project>
+        EOF
+
+        cd /tmp/dummy_dlls/stardew
+        dotnet build -c Release
+        cp bin/Release/net9.0-android/StardewValley.dll $GITHUB_WORKSPACE/../SMAPI-Android-1.6/src/DependenciesDll/StardewValley.dll
+
+        cd ../monogame
+        dotnet build -c Release
+        cp bin/Release/net9.0-android/MonoGame.Framework.dll $GITHUB_WORKSPACE/../SMAPI-Android-1.6/src/DependenciesDll/MonoGame.Framework.dll
+
+        cd ../gamedata
+        dotnet build -c Release
+        cp bin/Release/net9.0-android/StardewValley.GameData.dll $GITHUB_WORKSPACE/../SMAPI-Android-1.6/src/DependenciesDll/StardewValley.GameData.dll
 
     - name: Build APK (Release, android-arm64)
       run: dotnet build SMAPIGameLoader/SMAPIGameLoader.csproj -c Release -p:RuntimeIdentifier=android-arm64
