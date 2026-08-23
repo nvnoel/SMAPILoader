@@ -75,6 +75,7 @@
 		</Reference>
 		<Reference Include="MonoGame.Framework">
 			<HintPath>..\..\SMAPI-Android-1.6\src\DependenciesDll\MonoGame.Framework.dll</HintPath>
+			<Private>False</Private>
 		</Reference>
 		<Reference Include="StardewValley">
 			<HintPath>..\..\SMAPI-Android-1.6\src\DependenciesDll\StardewValley.dll</HintPath>
