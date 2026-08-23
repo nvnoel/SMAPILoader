@@ -80,10 +80,33 @@ public class SMAPIActivity : AndroidGameActivity
     void IntegrateStardewMainActivity()
     {
         Console.WriteLine("try get instance field");
-        var instance_Field = typeof(MainActivity).GetField("instance", BindingFlags.Static | BindingFlags.Public);
-        Console.WriteLine("try set field");
-        instance_Field.SetValue(null, this);
-        Console.WriteLine("done setup MainActivity.instance with: " + instance_Field.GetValue(null));
+        var bindingFlags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
+        var instance_Field = typeof(MainActivity).GetField("instance", bindingFlags);
+
+        if (instance_Field != null)
+        {
+            Console.WriteLine("try set field");
+            instance_Field.SetValue(null, this);
+            Console.WriteLine("done setup MainActivity.instance with: " + instance_Field.GetValue(null));
+        }
+        else
+        {
+            Console.WriteLine("instance field not found, try get Instance property");
+            var instance_Prop = typeof(MainActivity).GetProperty("Instance", bindingFlags)
+                ?? typeof(MainActivity).GetProperty("instance", bindingFlags);
+
+            if (instance_Prop != null)
+            {
+                Console.WriteLine("try set property");
+                instance_Prop.SetValue(null, this);
+                Console.WriteLine("done setup MainActivity.Instance with: " + instance_Prop.GetValue(null));
+            }
+            else
+            {
+                throw new Exception("Failed to find 'instance' field or property in MainActivity during integration.");
+            }
+        }
+
         MainActivityPatcher.Apply();
     }
 
