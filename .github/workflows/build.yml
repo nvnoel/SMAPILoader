@@ -24,7 +24,7 @@ jobs:
 
     - name: Create Dummy DLLs
       run: |
-        DUMMY_DIR="$GITHUB_WORKSPACE/../../SMAPI-Android-1.6/src/DependenciesDll"
+        DUMMY_DIR="$GITHUB_WORKSPACE/../SMAPI-Android-1.6/src/DependenciesDll"
         mkdir -p "$DUMMY_DIR"
         mkdir -p /tmp/dummy_dlls/stardew
         mkdir -p /tmp/dummy_dlls/monogame
